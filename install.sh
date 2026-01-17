@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Bobaland Dotfiles Installer
+# https://github.com/bondanbanuaji/bobaland
+
 set -e
 
 # Colors
@@ -7,205 +10,202 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
+CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
-# Functions
-print_success() {
-    echo -e "${GREEN}[✓]${NC} $1"
+# Directories
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CONFIG_DIR="$DOTFILES_DIR/.config"
+SCRIPTS_DIR="$DOTFILES_DIR/scripts"
+ASSETS_DIR="$DOTFILES_DIR/assets"
+BACKUP_DIR="$HOME/.config-backup-$(date +%Y%m%d-%H%M%S)"
+
+# Flags
+DRY_RUN=false
+NO_BACKUP=false
+
+# Helper Functions
+print_success() { echo -e "${GREEN}[✓]${NC} $1"; }
+print_error() { echo -e "${RED}[✗]${NC} $1"; }
+print_info() { echo -e "${BLUE}[i]${NC} $1"; }
+print_warning() { echo -e "${YELLOW}[!]${NC} $1"; }
+print_header() { echo -e "\n${CYAN}=== $1 ===${NC}\n"; }
+
+usage() {
+    echo "Usage: $0 [options]"
+    echo "Options:"
+    echo "  --dry-run    Preview changes without applying"
+    echo "  --no-backup  Skip backing up existing configs"
+    exit 0
 }
 
-print_error() {
-    echo -e "${RED}[✗]${NC} $1"
-}
+# Parse Args
+for arg in "$@"; do
+    case $arg in
+        --dry-run) DRY_RUN=true ;;
+        --no-backup) NO_BACKUP=true ;;
+        --help) usage ;;
+    esac
+done
 
-print_info() {
-    echo -e "${BLUE}[i]${NC} $1"
-}
-
-print_warning() {
-    echo -e "${YELLOW}[!]${NC} $1"
-}
-
-# Check if running as root
-if [[ $EUID -eq 0 ]]; then
-   print_error "Jangan run pake sudo! Script ini bakal minta password kalo perlu"
-   exit 1
-fi
-
-# Banner
-echo -e "${BLUE}"
-cat << "EOF"
+# Main Logic
+banner() {
+    echo -e "${CYAN}"
+    cat << "EOF"
 ╔═══════════════════════════════════════╗
-║     Dotfiles Installation Script      ║
-║          Arch Linux Setup             ║
+║       Bobaland Dotfiles Setup         ║
+║          Arch Linux Edition           ║
 ╚═══════════════════════════════════════╝
 EOF
-echo -e "${NC}"
+    echo -e "${NC}"
+}
 
-# Detect dotfiles directory
-DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-print_info "Dotfiles directory: $DOTFILES_DIR"
-
-# Backup existing configs
 backup_configs() {
-    print_info "Backup config yang ada..."
-    BACKUP_DIR="$HOME/.config-backup-$(date +%Y%m%d-%H%M%S)"
-    mkdir -p "$BACKUP_DIR"
+    if [ "$NO_BACKUP" = true ]; then return; fi
+    print_header "Backing up configurations"
     
-    if [ -d "$HOME/.config" ]; then
-        cp -r "$HOME/.config" "$BACKUP_DIR/" 2>/dev/null || true
-        print_success "Backup di: $BACKUP_DIR"
-    fi
-}
-
-# Install packages
-install_packages() {
-    print_info "Installing packages..."
-    
-    # Update system
-    sudo pacman -Syu --noconfirm
-    
-    # Install packages dari packages.txt
-    while IFS= read -r package || [ -n "$package" ]; do
-        # Skip comments and empty lines
-        [[ "$package" =~ ^#.*$ ]] && continue
-        [[ -z "$package" ]] && continue
-        
-        if pacman -Qi "$package" &> /dev/null; then
-            print_warning "$package udah ke-install"
-        else
-            print_info "Installing $package..."
-            sudo pacman -S --noconfirm "$package" || print_error "Gagal install $package"
-        fi
-    done < "$DOTFILES_DIR/packages.txt"
-    
-    print_success "Package installation selesai"
-}
-
-# Install AUR helper (yay)
-install_yay() {
-    if command -v yay &> /dev/null; then
-        print_warning "yay udah ke-install"
+    if [ "$DRY_RUN" = true ]; then
+        print_info "[DRY RUN] Would backup .config to $BACKUP_DIR"
         return
     fi
-    
-    print_info "Installing yay (AUR helper)..."
-    git clone https://aur.archlinux.org/yay.git /tmp/yay
-    cd /tmp/yay
-    makepkg -si --noconfirm
-    cd "$DOTFILES_DIR"
-    print_success "yay ter-install"
-}
 
-# Link dotfiles
-link_dotfiles() {
-    print_info "Linking dotfiles..."
+    mkdir -p "$BACKUP_DIR"
+    print_info "Creating backup at $BACKUP_DIR..."
     
-    # Create .config if not exists
-    mkdir -p "$HOME/.config"
-    
-    # Link semua config
-    for config in "$DOTFILES_DIR/.config"/*; do
-        config_name=$(basename "$config")
-        target="$HOME/.config/$config_name"
-        
-        if [ -e "$target" ] || [ -L "$target" ]; then
-            rm -rf "$target"
+    # Backup relevant configs only to save space/time, or just backup whole .config?
+    # Backing up individual conflicts is safer.
+    for config in "$CONFIG_DIR"/*; do
+        target="$HOME/.config/$(basename "$config")"
+        if [ -e "$target" ]; then
+            cp -r "$target" "$BACKUP_DIR/"
+            print_success "Backed up $(basename "$config")"
         fi
-        
-        ln -sf "$config" "$target"
-        print_success "Linked $config_name"
     done
 }
 
-# Setup SDDM
-setup_sddm() {
-    print_info "Setting up SDDM..."
-    bash "$DOTFILES_DIR/scripts/setup-sddm.sh"
-}
-
-# Setup GRUB
-setup_grub() {
-    print_info "Setting up GRUB..."
-    bash "$DOTFILES_DIR/scripts/setup-grub.sh"
-}
-
-# Setup Plymouth
-setup_plymouth() {
-    print_info "Setting up Plymouth..."
-    bash "$DOTFILES_DIR/scripts/setup-plymouth.sh"
-}
-
-# Enable services
-enable_services() {
-    print_info "Enabling services..."
+install_packages() {
+    print_header "Installing Packages"
     
-    sudo systemctl enable sddm.service
-    sudo systemctl enable NetworkManager.service
-    sudo systemctl enable bluetooth.service
+    # Check for packages.txt
+    PACKAGES_FILE="$SCRIPTS_DIR/packages.txt"
+    if [ ! -f "$PACKAGES_FILE" ]; then
+        print_warning "packages.txt not found in $SCRIPTS_DIR. Skipping package installation."
+        return
+    fi
+
+    if [ "$DRY_RUN" = true ]; then
+        print_info "[DRY RUN] Would install packages from $PACKAGES_FILE"
+        return
+    fi
+
+    # Read and install
+    sudo pacman -Syu --noconfirm
     
-    print_success "Services enabled"
+    # Check for yay
+    if ! command -v yay &> /dev/null; then
+        print_info "Installing yay..."
+        git clone https://aur.archlinux.org/yay.git /tmp/yay
+        cd /tmp/yay
+        makepkg -si --noconfirm
+        cd "$DOTFILES_DIR"
+    fi
+
+    print_info "Installing official and AUR packages..."
+    yay -S --needed --noconfirm - < "$PACKAGES_FILE"
+    print_success "Packages installed."
 }
 
-# Main installation
+link_configs() {
+    print_header "Linking Configuration Files"
+    
+    mkdir -p "$HOME/.config"
+
+    for config in "$CONFIG_DIR"/*; do
+        name=$(basename "$config")
+        target="$HOME/.config/$name"
+        
+        if [ "$DRY_RUN" = true ]; then
+            print_info "[DRY RUN] Would link $name -> $target"
+            continue
+        fi
+
+        # Remove existing config if it exists (backup handled previously)
+        if [ -e "$target" ] || [ -L "$target" ]; then
+            rm -rf "$target"
+        fi
+
+        ln -sf "$config" "$target"
+        print_success "Linked $name"
+    done
+}
+
+setup_assets() {
+    print_header "Setting up Assets"
+    
+    # Wallpapers
+    if [ "$DRY_RUN" = true ]; then
+        print_info "[DRY RUN] Would run setup-wallpapers.sh"
+    else
+        bash "$SCRIPTS_DIR/setup-wallpapers.sh"
+    fi
+}
+
+run_scripts() {
+    print_header "Running System Setup Scripts"
+    
+    scripts=("setup-grub.sh" "setup-plymouth.sh" "setup-sddm.sh")
+    
+    for script in "${scripts[@]}"; do
+        script_path="$SCRIPTS_DIR/$script"
+        
+        if [ ! -f "$script_path" ]; then continue; fi
+
+        echo -n "Run $script? (y/n) "
+        read -r response
+        if [[ "$response" =~ ^[Yy]$ ]]; then
+            if [ "$DRY_RUN" = true ]; then
+                print_info "[DRY RUN] Would execute $script_path"
+            else
+                print_info "Executing $script..."
+                # These scripts usually require root, so we invoke with sudo if needed inside user prompt or here?
+                # Best to run with sudo here if script handles it, but my scripts check if root.
+                # So we should run them with sudo.
+                sudo bash "$script_path"
+            fi
+        fi
+    done
+}
+
 main() {
-    echo ""
-    print_info "Mulai instalasi..."
-    echo ""
+    banner
+    if [ "$DRY_RUN" = true ]; then print_warning "DRY RUN MODE ACTIVE"; fi
     
-    # Prompt user
-    read -p "Backup config yang ada? (y/n): " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        backup_configs
-    fi
+    # Check requirements
+    if [ ! -d "$CONFIG_DIR" ]; then print_error "Configuration directory not found!"; exit 1; fi
+
+    # Confirm
+    echo "This script will overwrite your existing configurations."
+    echo -n "Continue? (y/n) "
+    read -r response
+    if [[ ! "$response" =~ ^[Yy]$ ]]; then exit 0; fi
+
+    backup_configs
     
-    echo ""
-    read -p "Install packages? (y/n): " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        install_packages
-        install_yay
-    fi
+    echo -n "Install packages? (y/n) "
+    read -r response
+    if [[ "$response" =~ ^[Yy]$ ]]; then install_packages; fi
     
-    echo ""
-    read -p "Link dotfiles? (y/n): " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        link_dotfiles
-    fi
+    link_configs
     
-    echo ""
-    read -p "Setup SDDM? (y/n): " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        setup_sddm
-    fi
-    
-    echo ""
-    read -p "Setup GRUB? (y/n): " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        setup_grub
-    fi
-    
-    echo ""
-    read -p "Setup Plymouth (boot animation)? (y/n): " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        setup_plymouth
-    fi
-    
-    echo ""
-    read -p "Enable services? (y/n): " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        enable_services
-    fi
-    
-    echo ""
-    print_success "Instalasi selesai!"
-    print_info "Restart system buat apply semua changes"
+    # Wallpapers are safe to always install if folder exists? asking is better.
+    echo -n "Install wallpapers? (y/n) "
+    read -r response
+    if [[ "$response" =~ ^[Yy]$ ]]; then setup_assets; fi
+
+    run_scripts
+
+    print_header "Installation Complete!"
+    print_info "Please reboot your system."
 }
 
 main

@@ -1,16 +1,31 @@
-# Theming Guide
+# 🎨 Theming Guide
 
-## Changing Wallpapers
-Wallpapers are stored in `assets/wallpapers`. You can change the wallpaper by editing `hyprland.conf` (if using hyprpaper) or running:
+## Color Palette (Miku Theme)
+| Color Name | Hex Code | Usage |
+|------------|----------|-------|
+| **Cyan/Teal** | `#39c5bb` | Accent, Borders, Active Elements |
+| **Dark Grey** | `#232323` | Backgrounds |
+| **Light Grey** | `#383838` | Panels, Inactive Borders |
+| **White** | `#ffffff` | Text |
+| **Pink** | `#ff69b4` | Secondary Accent (Sakura) |
+
+## Changing Themes
+
+### Wallpaper
+Use the provided script:
 ```bash
-hyprctl hyprpaper wallpaper "monitor,/path/to/wallpaper"
+./scripts/setup-wallpapers.sh
 ```
+Or edit `~/.config/hypr/hyprpaper.conf`.
 
-## Customizing Colors
-Color schemes are defined in `scripts/utils/colors.sh` for scripts.
-For applications:
-- **Kitty**: Edit `config/kitty/kitty.conf`
-- **Waybar**: Edit `config/waybar/style.css`
+### GTK Theme
+Install `nwg-look` to manage GTK themes.
+Recommended Theme: `Arc-Dark` or `Catppuccin-Mocha`.
+Recommended Icons: `Papirus-Dark`.
 
-## Boot Themes
-Run the installation script again and choose the theming option to re-apply GRUB or Plymouth themes.
+### Cursor
+Update `~/.config/hypr/hyprland.conf`:
+```bash
+env = XCURSOR_THEME,Bibata-Modern-Ice
+env = XCURSOR_SIZE,24
+```
