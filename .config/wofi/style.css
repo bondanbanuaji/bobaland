@@ -1,0 +1,58 @@
+/* --- ZERO TWO ELEGANT REVISION --- */
+
+window {
+    margin: 0px;
+    /* Border jadi gelap, tidak pink mentereng */
+    border: 2px solid #313244; 
+    /* Background sangat gelap & solid untuk kesan premium */
+    background-color: rgba(30, 30, 46, 0.98);
+    border-radius: 12px;
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 14px;
+}
+
+#input {
+    margin: 10px;
+    border: none;
+    border-radius: 8px;
+    color: #cdd6f4; /* Teks input putih bersih */
+    background-color: #181825; /* Lebih gelap dari window */
+    padding: 12px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.5); /* Efek kedalaman */
+}
+
+#inner-box {
+    margin: 5px;
+    border: none;
+    background-color: transparent;
+}
+
+#outer-box {
+    margin: 5px;
+    border: none;
+    background-color: transparent;
+}
+
+#scroll {
+    margin: 0px;
+    border: none;
+}
+
+#text {
+    margin: 5px;
+    border: none;
+    color: #a6adc8; /* Teks list sedikit abu-abu biar tidak sakit mata */
+}
+
+/* --- BAGIAN PENTING: SELECTION STYLE --- */
+/* Saat dipilih: Background pink tipis + Teks Pink Menyala */
+#entry:selected {
+    background-color: rgba(255, 95, 135, 0.15); /* Pink transparan banget */
+    border: 1px solid rgba(255, 95, 135, 0.5); /* Garis tepi pink tipis */
+    border-radius: 8px;
+}
+
+#entry:selected #text {
+    color: #ff5f87; /* Teks berubah jadi Pink Zero Two */
+    font-weight: bold;
+}

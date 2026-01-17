@@ -1,205 +1,83 @@
-# Package List for bobaland
-# Arch Linux packages required for the complete setup
+# Window Manager & Compositor
+hyprland
+xdg-desktop-portal-hyprland
 
-# ============================================
-# CORE PACKAGES - Window Manager & Compositor
-# ============================================
-hyprland                    # Wayland compositor
-hyprpaper                   # Wallpaper utility for Hyprland
-hyprlock                    # Screen locker
-hypridle                    # Idle daemon
-xdg-desktop-portal-hyprland # Desktop portal for Hyprland
-xdg-desktop-portal-gtk      # GTK portal backend
+# Status Bar
+waybar
+otf-font-awesome
 
-# ============================================
-# STATUS BAR & PANELS
-# ============================================
-waybar                      # Highly customizable status bar
-eww                         # Widget system (optional alternative)
+# Session Management
+wlogout
+swaylock
+swayidle
 
-# ============================================
-# TERMINAL EMULATORS
-# ============================================
-kitty                       # GPU-accelerated terminal (primary)
-alacritty                   # Alternative lightweight terminal (optional)
+# Display Manager
+sddm
+qt5-graphicaleffects
+qt5-quickcontrols2
+qt5-svg
 
-# ============================================
-# APPLICATION LAUNCHERS
-# ============================================
-rofi-wayland                # Application launcher (Wayland fork)
-wofi                        # Alternative Wayland launcher (optional)
+# Terminal & Shell
+kitty
+zsh
+starship
 
-# ============================================
-# NOTIFICATIONS
-# ============================================
-dunst                       # Lightweight notification daemon
-libnotify                   # Desktop notifications library
+# App Launcher
+wofi
 
-# ============================================
-# LOGOUT/POWER MENU
-# ============================================
-wlogout                     # Wayland logout menu
+# Notifications
+dunst
+libnotify
 
-# ============================================
-# DISPLAY MANAGER
-# ============================================
-sddm                        # Display manager (login screen)
-qt5-graphicaleffects        # Required for SDDM themes
-qt5-quickcontrols2          # Required for SDDM themes
-qt5-svg                     # SVG support for SDDM
+# File Manager
+thunar
+tumbler
 
-# ============================================
-# BOOTLOADER THEME
-# ============================================
-grub                        # Bootloader
-os-prober                   # Detect other operating systems
+# Screenshot
+grim
+slurp
+swappy
 
-# ============================================
-# BOOT SPLASH
-# ============================================
-plymouth                    # Boot splash screen
+# Media
+mpv
+imv
 
-# ============================================
-# AUDIO
-# ============================================
-pipewire                    # Modern audio server
-pipewire-alsa               # ALSA support
-pipewire-pulse              # PulseAudio compatibility
-pipewire-jack               # JACK compatibility
-wireplumber                 # Session manager for PipeWire
-pavucontrol                 # PulseAudio volume control GUI
-pamixer                     # Command-line volume mixer
-playerctl                   # Media player controller
+# Audio
+pipewire
+pipewire-pulse
+pipewire-alsa
+wireplumber
+pamixer
 
-# ============================================
-# NETWORK & BLUETOOTH
-# ============================================
-networkmanager              # Network connection manager
-network-manager-applet      # NetworkManager system tray
-bluez                       # Bluetooth protocol stack
-bluez-utils                 # Bluetooth utilities
-blueman                     # Bluetooth manager GUI
+# Networking
+networkmanager
+network-manager-applet
 
-# ============================================
-# AUTHENTICATION
-# ============================================
-polkit                      # Authorization framework
-polkit-kde-agent            # KDE polkit authentication Sagent
+# Bluetooth
+bluez
+bluez-utils
+blueman
 
-# ============================================
-# WALLPAPER & SCREENSHOTS
-# ============================================
-swww                        # Efficient animated wallpaper daemon
-grim                        # Screenshot tool for Wayland
-slurp                       # Region selector for Wayland
-swappy                      # Wayland screenshot editor
-wl-clipboard                # Wayland clipboard utilities
+# Themes & Icons
+nwg-look
+qt5ct
+kvantum
 
-# ============================================
-# FILE MANAGERS
-# ============================================
-thunar                      # Lightweight file manager
-thunar-volman               # Volume management for Thunar
-thunar-archive-plugin       # Archive support for Thunar
-gvfs                        # Virtual filesystem (trash, network, etc.)
-gvfs-mtp                    # MTP device support (Android phones)
+# Fonts
+ttf-jetbrains-mono-nerd
+noto-fonts
+noto-fonts-emoji
 
-# ============================================
-# IMAGE VIEWERS
-# ============================================
-imv                         # Lightweight image viewer for Wayland
-feh                         # Alternative image viewer
+# Plymouth (boot animation)
+plymouth
 
-# ============================================
-# PDF VIEWER
-# ============================================
-zathura                     # Minimal PDF viewer
-zathura-pdf-mupdf           # PDF support for Zathura
+# GRUB themes
+os-prober
 
-# ============================================
-# SYSTEM UTILITIES
-# ============================================
-brightnessctl               # Brightness control
-wlr-randr                   # Display configuration tool
-wlsunset                    # Day/night gamma adjustments
-cliphist                    # Clipboard manager
-
-# ============================================
-# FONTS
-# ============================================
-ttf-font-awesome            # Icon font
-ttf-jetbrains-mono-nerd     # Nerd font with icons
-noto-fonts                  # Google Noto fonts
-noto-fonts-emoji            # Emoji support
-noto-fonts-cjk              # CJK (Chinese, Japanese, Korean) support
-ttf-liberation              # Liberation fonts
-ttf-dejavu                  # DejaVu fonts
-
-# ============================================
-# THEMES & ICONS
-# ============================================
-papirus-icon-theme          # Popular icon theme
-breeze                      # Breeze theme for Qt apps
-breeze-gtk                  # Breeze theme for GTK apps
-gtk-engine-murrine          # GTK2 theme engine
-gnome-themes-extra          # Additional GTK themes
-qt5ct                       # Qt5 configuration tool
-qt6ct                       # Qt6 configuration tool
-lxappearance                # GTK theme switcher
-
-# ============================================
-# TEXT EDITOR
-# ============================================
-neovim                      # Modern Vim-based editor
-nano                        # Simple text editor
-vim                         # Classic text editor
-
-# ============================================
-# DEVELOPMENT TOOLS (Optional)
-# ============================================
-git                         # Version control
-base-devel                  # Development tools
-code                        # VS Code (from AUR or Flatpak)
-
-# ============================================
-# SYSTEM MONITORING
-# ============================================
-htop                        # Interactive process viewer
-btop                        # Modern resource monitor
-fastfetch                   # System info display
-
-# ============================================
-#AUR PACKAGES (Install with yay/paru)
-# ============================================
-# swww                      # Animated wallpaper daemon (may be in AUR)
-# wlogout                   # Logout menu (latest version)
-# hyprpicker                # Color picker for Hyprland
-# hyprshot                  # Screenshot tool
-# waybar-module-pacman-updates-git  # Pacman updates module for Waybar
-
-# ============================================
-# OPTIONAL PACKAGES
-# ============================================
-# firefox                   # Web browser
-# chromium                  # Alternative browser
-# mpv                       # Video player
-# spotify                   # Music streaming (AUR or Flatpak)
-# discord                   # Communication (AUR or Flatpak)
-# obs-studio                # Screen recording/streaming
-# gimp                      # Image editor
-# inkscape                  # Vector graphics editor
-# libreoffice-fresh         # Office suite
-
-# ============================================
-# INSTALLATION NOTES
-# ============================================
-# Install official packages:
-#   sudo pacman -S $(grep -v "^#" packages.txt | grep -v "^$" | tr '\n' ' ')
-#
-# Install AUR packages:
-#   yay -S <package-name>
-#   or
-#   paru -S <package-name>
-#
-# To install all at once (be careful):
-#   cat packages.txt | grep -v "^#" | grep -v "^$" | awk '{print $1}' | xargs sudo pacman -S --needed
+# Utilities
+polkit-gnome
+xdg-user-dirs
+wl-clipboard
+cliphist
+brightnessctl
+playerctl
