@@ -1,0 +1,238 @@
+# ============================================
+# bobaland - Git Ignore File
+# ============================================
+# Comprehensive ignore patterns for dotfiles repository
+# ============================================
+
+# ============================================
+# BACKUP FILES
+# ============================================
+backup/
+*.backup
+*.bak
+*.old
+*.orig
+*~
+
+# ============================================
+# LOG FILES
+# ============================================
+*.log
+logs/
+*.out
+
+# ============================================
+# TEMPORARY FILES
+# ============================================
+*.tmp
+*.temp
+*.swp
+*.swo
+*.swn
+.DS_Store
+Thumbs.db
+.directory
+
+# ============================================
+# EDITOR FILES
+# ============================================
+# Vim
+*.sw[po]
+.*.sw[po]
+Session.vim
+.netrwhist
+
+# Emacs
+\#*\#
+.\#*
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# IntelliJ
+.idea/
+*.iml
+
+# Sublime
+*.sublime-project
+*.sublime-workspace
+
+# ============================================
+# OS FILES
+# ============================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.directory
+.Trash-*
+
+# ============================================
+# CACHE & BUILD
+# ============================================
+.cache/
+__pycache__/
+*.pyc
+*.pyo
+node_modules/
+dist/
+build/
+*.egg-info/
+
+# ============================================
+# SENSITIVE DATA
+# ============================================
+# Never commit these!
+*.key
+*.pem
+*.p12
+*.pfx
+*.keystore
+secrets/
+.env
+.env.local
+.env.*.local
+*_secret*
+*_private*
+credentials.json
+auth.json
+
+# SSH keys
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+
+# GPG keys
+*.gpg
+*.asc
+private-keys-v1.d/
+
+# ============================================
+# USER-SPECIFIC FILES
+# ============================================
+# These should not be tracked as they're user-specific
+.local/
+.mozilla/
+.thunderbird/
+.steam/
+.wine/
+
+# User cache files
+.cache/
+.cargo/
+.npm/
+.yarn/
+.rustup/
+
+# ============================================
+# HYPRLAND SPECIFIC
+# ============================================
+# Runtime files
+hyprland.log
+hypr.log
+
+# User-specific monitor configs (optional, comment out if you want to track)
+# monitors.conf
+
+# ============================================
+# WAYBAR SPECIFIC
+# ============================================
+# User-specific module configs (optional)
+# modules/user-*.json
+
+# ============================================
+# SDDM SPECIFIC
+# ============================================
+# User avatars
+themes/sddm/avatars/*.jpg
+themes/sddm/avatars/*.png
+# But keep example avatar
+!themes/sddm/avatars/default.png
+
+# ============================================
+# WALLPAPERS
+# ============================================
+# Uncomment if wallpapers are large and hosted externally
+# wallpapers/*.jpg
+# wallpapers/*.png
+# !wallpapers/main.jpg
+# !wallpapers/lockscreen.jpg
+
+# ============================================
+# SCREENSHOTS
+# ============================================
+# Don't track generated screenshots (only keep curated ones in assets/)
+screenshots/
+Pictures/Screenshots/
+
+# ============================================
+# PACKAGES
+# ============================================
+# Package manager files
+*.pkg.tar.*
+*.tar.gz
+*.tar.xz
+*.tar.zst
+
+# ============================================
+# DEVELOPMENT
+# ============================================
+# Test files
+test/
+tests/
+*.test
+.pytest_cache/
+
+# Coverage
+.coverage
+htmlcov/
+coverage.xml
+
+# ============================================
+# DOCUMENTATION BUILD
+# ============================================
+# Generated docs
+docs/_build/
+docs/.doctrees/
+site/
+
+# ============================================
+# PROJECT SPECIFIC
+# ============================================
+# Installation logs
+.local/share/bobaland/*.log
+
+# Temporary install files
+.install_tmp/
+.setup_tmp/
+
+# User notes (for personal use)
+NOTES.md
+TODO.md
+.personal/
+
+# ============================================
+# KEEP THESE FILES
+# ============================================
+# Force include important files that might match patterns above
+!.gitignore
+!.github/
+!.config/
+!scripts/
+!themes/
+!wallpapers/main.jpg
+!wallpapers/lockscreen.jpg
+!assets/screenshots/*.png
+!README.md
+!LICENSE
