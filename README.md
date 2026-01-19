@@ -30,12 +30,11 @@ Welcome to **Bobaland**, a highly customized, professional, and aesthetic dotfil
 
 ## Show Up 
 
+![wacth on yt](https://youtu.be/c1lUxNYNS5Q)
 
-Uploading showup_setup.mp4…
+![watch now](https://github.com/user-attachments/assets/c8d48ba2-1d7b-43b5-a79d-491cc76276f1)
 
-
-
-> **Click the image above to watch the setup demo video**
+> **Click the link or video above to watch the setup demo**
 
 ## ✨ Features
 - **Window Manager**: [Hyprland](https://hyprland.org/) with smooth animations.
