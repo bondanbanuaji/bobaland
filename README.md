@@ -16,6 +16,7 @@
 ⣗⣛⢰⢟⣼⢏⣿⡩⣱⣿⣿⣿⢟⣘⢿⡟⣽⣷⡎⣿⣾⣿⣿⣷⣆⢸⣿⣿⣿
 ⣿⠿⠿⠷⣶⠿⢷⣦⣿⣿⣿⣥⢿⣿⢣⣯⣿⣿⣿⣹⣿⣿⣿⣿⡿⠧⣻⣿⣿
 
+
 ![Badge](https://img.shields.io/badge/Arch%20Linux-Best%20OS-1793d1?style=for-the-badge&logo=archlinux&logoColor=white)
 ![Badge](https://img.shields.io/badge/Hyprland-Window%20Manager-33ccff?style=for-the-badge&logo=hyprland&logoColor=white)
 ![Badge](https://img.shields.io/badge/Miku-Theme-39c5bb?style=for-the-badge)
