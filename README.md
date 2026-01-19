@@ -30,9 +30,9 @@ Welcome to **Bobaland**, a highly customized, professional, and aesthetic dotfil
 
 ## Show Up 
 
-[![watch on youtube](https://img.shields.io/badge/Watch%20on-YouTube-red?logo=youtube&logoColor=white)](https://youtu.be/c1lUxNYNS5Q)
+[![watch on my yy](https://img.shields.io/badge/Watch%20on-YouTube-red?logo=youtube&logoColor=white)](https://youtu.be/c1lUxNYNS5Q)
 
-**watch now** 
+**↓ watch now below ↓** 
 
 https://github.com/user-attachments/assets/c8d48ba2-1d7b-43b5-a79d-491cc76276f1
 
@@ -65,4 +65,4 @@ cd bobaland
 [Documentation](https://github.com/bondanbanuaji/bobaland/blob/main/docs/DOCUMENTATION.md)
 
 ## 📜 License
-MIT © [Bondan Banuaji](https://github.com/bondanbanuaji)
+MIT © [boba](https://github.com/bondanbanuaji)
