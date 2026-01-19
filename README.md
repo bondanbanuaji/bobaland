@@ -16,7 +16,7 @@
 ⡇⣿⣿⣿⣿⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⠈⠄⣸⣿⣿⣿⣿⠿⣫⣾⣿⣿⣸⣏
 ⡇⣿⣿⣿⣿⣇⢈⠻⠿⣿⣿⣿⣿⣿⣿⣷⣶⣶⣿⠿⠟⣋⣥⣾⣿⣿⣿⣿⣿⣿
 ⡇⣿⣿⣿⣿⣿⡄⢿⣷⣶⣦⣭⣭⣭⣍⠉⠉⠥⠦⠐⣾⣿⣿⣿⣿⣿⣿⣿⣯⣿
-      
+
 ```
 
 
@@ -30,7 +30,8 @@ Welcome to **Bobaland**, a highly customized, professional, and aesthetic dotfil
 
 ## Show Up 
 
-<video src="public/vid/showup_setup.mp4" width="100%" controls autoplay muted loop></video>
+[![Desktop Setup Preview](public/vid/showup_setup_thumb.jpg)](public/vid/showup_setup.mp4)
+> **Click the image above to watch the setup demo video**
 
 ## ✨ Features
 - **Window Manager**: [Hyprland](https://hyprland.org/) with smooth animations.
