@@ -30,7 +30,7 @@ Welcome to **Bobaland**, a highly customized, professional, and aesthetic dotfil
 
 ## Show Up 
 
-[![Desktop Setup Preview](public/vid/showup_setup_thumb.jpg)](public/vid/showup_setup.mp4)
+![Desktop Setup Preview]
 > **Click the image above to watch the setup demo video**
 
 ## ✨ Features

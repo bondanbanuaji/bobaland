@@ -4,7 +4,9 @@ First off, thank you for considering contributing to **bobaland**! It's people l
 
 ---
 
-## Very Very Thanks to my inspiration and reference setup arch hyprland : VlegPhunt Repo : https://github.com/ViegPhunt/Arch-Hyprland
+## Very Very Thanks to my inspiration and reference setup arch hyprland 
+
+- VlegPhunt Repo : https://github.com/ViegPhunt/Arch-Hyprland
 
 ## 📋 Code of Conduct
 
