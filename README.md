@@ -5,7 +5,7 @@
 ![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
 
 ## 🌙 Tentang Filosofi Ini
-Setup Arch Linux bertema Hatsune Miku. Terlahir dari "kegabutan" produktif seorang mahasiswa di keheningan malam, dikemas apik oleh Hyprland, dan dirapikan oleh kesenjangan. Modular, otomatis, cepat, dan estetis — bukti nyata bahwa waktu luang pun bisa bertransformasi menjadi karya yang berarti, dengan harapan tulus untuk menjadi yang paling bermanfaat bagi sesama. ~
+Setup Arch Linux bertema Hatsune Miku. Terlahir dari "kegabutan" produktif seorang mahasiswa di keheningan malam, dikemas apik oleh Hyprland, dan dirapikan oleh kesenjangan. Modular, otomatis, cepat, dan estetis — bukti nyata bahwa waktu luang pun bisa bertransformasi menjadi karya yang berarti, dengan harapan tulus untuk menjadi yang paling bermanfaat bagi sesama~
 
 ## Table of Contents
 - [Preview](#preview)
