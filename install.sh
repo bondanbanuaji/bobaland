@@ -133,11 +133,22 @@ backup_configs() {
     log_info "Creating backup at: $backup_dir"
     mkdir -p "$backup_dir"
     
-    [ -d "$HOME/.config" ] && cp -r "$HOME/.config" "$backup_dir/"
-    [ -f "$HOME/.zshrc" ] && cp "$HOME/.zshrc" "$backup_dir/"
-    [ -f "$HOME/.tmux.conf" ] && cp "$HOME/.tmux.conf" "$backup_dir/"
+    # Move configs (instead of cp) to ensure clean slate for stow
+    if [ -d "$HOME/.config" ]; then
+        log_info "Moving existing ~/.config to backup..."
+        mv "$HOME/.config" "$backup_dir/"
+        mkdir -p "$HOME/.config"
+    fi
+
+    if [ -f "$HOME/.zshrc" ]; then
+        mv "$HOME/.zshrc" "$backup_dir/"
+    fi
     
-    log_success "Backup created: $backup_dir"
+    if [ -f "$HOME/.tmux.conf" ]; then
+        mv "$HOME/.tmux.conf" "$backup_dir/"
+    fi
+    
+    log_success "Backup created and conflicting files moved to: $backup_dir"
 }
 
 # Clone dotfiles
@@ -162,15 +173,16 @@ clone_dotfiles() {
 install_packages() {
     log_info "Installing packages..."
     
+    # Main packages
     local packages=(
         "hyprland" "xdg-desktop-portal-hyprland"
-        "ghostty" "zsh" "tmux"
+        "zsh" "tmux"
         "waybar" "swaync" "rofi-wayland" "wlogout"
         "pipewire" "wireplumber" "cava"
         "ttf-jetbrains-mono-nerd" "ttf-font-awesome" "noto-fonts-emoji"
         "neovim" "stow"
     )
-    
+
     echo -e "${CYAN}Packages to install:${NC}"
     printf '%s\n' "${packages[@]}" | column
     echo ""
@@ -179,7 +191,19 @@ install_packages() {
     echo
     
     if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
+        # Install main packages
         sudo pacman -S --needed --noconfirm "${packages[@]}"
+        
+        # Smart terminal install (Ghostty fallback)
+        log_info "Installing terminal..."
+        if pacman -Si ghostty &>/dev/null; then
+            echo -e "${GREEN}Installing Ghostty...${NC}"
+            sudo pacman -S --needed --noconfirm ghostty
+        else
+            log_warn "Ghostty not found in official repos. Installing Kitty as fallback."
+            sudo pacman -S --needed --noconfirm kitty
+        fi
+        
         log_success "Packages installed"
     else
         log_warn "Skipped package installation"
@@ -191,6 +215,10 @@ deploy_dotfiles() {
     local dotfiles_dir="$HOME/dotfiles"
     log_info "Deploying dotfiles with GNU Stow..."
     cd "$dotfiles_dir"
+    
+    # Ensure standard directories exist
+    mkdir -p "$HOME/.config"
+    
     stow -v .
     log_success "Dotfiles deployed"
 }
@@ -205,6 +233,7 @@ setup_zsh() {
     fi
     
     if [ ! -d "$HOME/.oh-my-zsh" ]; then
+        echo -e "${CYAN}Installing Oh-My-Zsh...${NC}"
         sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     fi
 }
