@@ -4,6 +4,17 @@
 ![Hyprland](https://img.shields.io/badge/Hyprland-00A4A6?style=for-the-badge&logo=hyprland&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
 
+## 🌙 Tentang Filosofi Ini
+Setup ini bukan cuma soal pamer desktop atau distro keren-kerenan. Ada cerita di baliknya:
+
+Lahir dari Sunyi: Tercipta pas dunia lagi tidur dan pikiran lagi ke mana-mana. Di jam-jam krusial mahasiswa itulah, baris kode Arch Linux ketemu dengan estetika Hatsune Miku. Ini adalah bukti kalau "gabut" nggak selalu sia-sia; gabut bisa jadi karya kalau diarahkan dengan benar.
+
+Harmoni dalam Kontras: Memadukan Arch Linux yang dikenal "galak" dengan Miku yang ceria. Ini tentang keseimbangan—bagaimana sistem yang teknis dan dingin bisa terasa personal, cantik, dan punya jiwa.
+
+Rapi karena Terpaksa, Estetis karena Terbiasa: Katanya "dirapikan oleh kesenjangan". Artinya, di tengah hidup mahasiswa yang mungkin berantakan, kita butuh satu tempat yang bisa kita kontrol sepenuhnya. Desktop yang modular dan otomatis adalah cara kita menciptakan keteraturan di tengah kekacauan.
+
+Bermanfaat itu Candu: Harapan terbesarnya sederhana. Semoga apa yang diracik di tengah malam ini nggak cuma mentok di laptop sendiri, tapi bisa jadi inspirasi atau alat bantu buat orang lain. Karena sebaik-baiknya setup, adalah yang bikin penggunanya produktif dan orang lain terbantu.
+
 ## Table of Contents
 - [Preview](#preview)
 - [Features](#features)
