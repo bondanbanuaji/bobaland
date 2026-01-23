@@ -8,7 +8,7 @@
 
 ## 🇮🇩 Bahasa Indonesia
 
-### 🌙 Tentang Filosofi Ini
+### 🌙 Filosofi :
 Setup Arch Linux bertema Hatsune Miku. Terlahir dari "kegabutan" produktif seorang mahasiswa di keheningan malam, dikemas apik oleh Hyprland, dan dirapikan oleh kesenjangan. Modular, otomatis, cepat, dan estetis — bukti nyata bahwa waktu luang pun bisa bertransformasi menjadi karya yang berarti, dengan harapan tulus untuk menjadi yang paling bermanfaat bagi sesama~
 
 ### 📋 Daftar Isi
@@ -42,19 +42,19 @@ Setup Arch Linux bertema Hatsune Miku. Terlahir dari "kegabutan" produktif seora
 
 <p align="center">
   <img src="assets/screenshots/terminal.png" alt="Terminal" width="49%"/>
-  <img src="assets/screenshots/neovim.png" alt="Neovim" width="49%"/>
+  <img src="assets/screenshots/full_showcase.png" alt="Full Showcase" width="49%"/>
 </p>
 
 <details>
 <summary>📂 Lihat Screenshot Lainnya</summary>
 
 <p align="center">
-  <img src="assets/screenshots/waybar.png" alt="Waybar" width="49%"/>
-  <img src="assets/screenshots/notifications.png" alt="Notifications" width="49%"/>
+  <img src="assets/screenshots/hyprlock.png" alt="Waylock" width="49%"/>
+  <img src="assets/screenshots/sddm.png" alt="SDDM" width="49%"/>
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/cava.png" alt="Cava Visualizer" width="49%"/>
+  <img src="assets/screenshots/bootgrub.png" alt="Boot Grub" width="49%"/>
   <img src="assets/screenshots/wlogout.png" alt="Wlogout Menu" width="49%"/>
 </p>
 
@@ -108,7 +108,7 @@ Jika mengalami masalah:
 
 ## 🇺🇸 English
 
-### 🌙 About the Philosophy
+### 🌙 Philosophy :
 An Arch Linux setup themed after Hatsune Miku. Born from the productive "procrastination" of a student in the silence of the night, neatly packaged by Hyprland, and organized by disparity. Modular, automated, fast, and aesthetic — real proof that spare time can transform into meaningful work, with a sincere hope to be as useful as possible to others~
 
 ### 📋 Table of Contents
@@ -144,19 +144,19 @@ An Arch Linux setup themed after Hatsune Miku. Born from the productive "procras
 
 <p align="center">
   <img src="assets/screenshots/terminal.png" alt="Terminal" width="49%"/>
-  <img src="assets/screenshots/neovim.png" alt="Neovim" width="49%"/>
+  <img src="assets/screenshots/full_showcase.png" alt="Full Showcase" width="49%"/>
 </p>
 
 <details>
-<summary>📂 View More Screenshots</summary>
+<summary>📂 Lihat Screenshot Lainnya</summary>
 
 <p align="center">
-  <img src="assets/screenshots/waybar.png" alt="Waybar" width="49%"/>
-  <img src="assets/screenshots/notifications.png" alt="Notifications" width="49%"/>
+  <img src="assets/screenshots/hyprlock.png" alt="Waylock" width="49%"/>
+  <img src="assets/screenshots/sddm.png" alt="SDDM" width="49%"/>
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/cava.png" alt="Cava Visualizer" width="49%"/>
+  <img src="assets/screenshots/bootgrub.png" alt="Boot Grub" width="49%"/>
   <img src="assets/screenshots/wlogout.png" alt="Wlogout Menu" width="49%"/>
 </p>
 
