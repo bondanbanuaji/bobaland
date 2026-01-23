@@ -26,11 +26,39 @@ Setup Arch Linux bertema Hatsune Miku. Terlahir dari "kegabutan" produktif seora
 - [Kredit](#kredit)
 
 ### 🖼️ Pratinjau
-> [!NOTE]
-> Screenshot dan video akan segera ditambahkan!
 
-*(Tempat untuk screenshot)*
-*(Tempat untuk demo video)*
+#### 📹 Video Demo
+> Tonton demo lengkap di YouTube
+
+[![Watch Demo](https://img.shields.io/badge/▶️_Watch_on-YouTube-red?style=for-the-badge&logo=youtube)](https://youtu.be/gVWVZL6gfX8)
+
+
+#### 📸 Screenshots
+
+<p align="center">
+  <img src="assets/screenshots/desktop.png" alt="Desktop" width="49%"/>
+  <img src="assets/screenshots/rofi.png" alt="Rofi Launcher" width="49%"/>
+</p>
+
+<p align="center">
+  <img src="assets/screenshots/terminal.png" alt="Terminal" width="49%"/>
+  <img src="assets/screenshots/neovim.png" alt="Neovim" width="49%"/>
+</p>
+
+<details>
+<summary>📂 Lihat Screenshot Lainnya</summary>
+
+<p align="center">
+  <img src="assets/screenshots/waybar.png" alt="Waybar" width="49%"/>
+  <img src="assets/screenshots/notifications.png" alt="Notifications" width="49%"/>
+</p>
+
+<p align="center">
+  <img src="assets/screenshots/cava.png" alt="Cava Visualizer" width="49%"/>
+  <img src="assets/screenshots/wlogout.png" alt="Wlogout Menu" width="49%"/>
+</p>
+
+</details>
 
 ### ✨ Fitur
 - 🛠️ **Instalasi Interaktif**: Menu yang ramah pengguna untuk memandu proses instalasi.
@@ -98,11 +126,43 @@ An Arch Linux setup themed after Hatsune Miku. Born from the productive "procras
 - [Credits](#credits-english)
 
 ### 🖼️ Preview (English)
-> [!NOTE]
-> Screenshots and videos will be added soon!
 
-*(Placeholder for screenshotss)*
-*(Placeholder for video demo)*
+#### 📹 Video Demo
+> Watch the full demo on YouTube
+
+[![Watch Demo](https://img.shields.io/badge/▶️_Watch_on-YouTube-red?style=for-the-badge&logo=youtube)](https://youtu.be/gVWVZL6gfX8)
+
+<!-- Or embed directly if you have video file in repo -->
+<!-- <video src="https://github.com/user-attachments/assets/YOUR_VIDEO_FILE.mp4"></video> -->
+
+#### 📸 Screenshots
+
+<p align="center">
+  <img src="assets/screenshots/desktop.png" alt="Desktop" width="49%"/>
+  <img src="assets/screenshots/rofi.png" alt="Rofi Launcher" width="49%"/>
+</p>
+
+<p align="center">
+  <img src="assets/screenshots/terminal.png" alt="Terminal" width="49%"/>
+  <img src="assets/screenshots/neovim.png" alt="Neovim" width="49%"/>
+</p>
+
+<details>
+<summary>📂 View More Screenshots</summary>
+
+<p align="center">
+  <img src="assets/screenshots/waybar.png" alt="Waybar" width="49%"/>
+  <img src="assets/screenshots/notifications.png" alt="Notifications" width="49%"/>
+</p>
+
+<p align="center">
+  <img src="assets/screenshots/cava.png" alt="Cava Visualizer" width="49%"/>
+  <img src="assets/screenshots/wlogout.png" alt="Wlogout Menu" width="49%"/>
+</p>
+
+</details>
+
+---
 
 ### ✨ Features (English)
 - 🛠️ **Interactive Installation**: User-friendly menu to guide you through the process.
