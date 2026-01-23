@@ -6,9 +6,9 @@
 
 ---
 
-## �🇩 Bahasa Indonesia
+## 🇮🇩 Bahasa Indonesia
 
-### �🌙 Tentang Filosofi Ini
+### 🌙 Tentang Filosofi Ini
 Setup Arch Linux bertema Hatsune Miku. Terlahir dari "kegabutan" produktif seorang mahasiswa di keheningan malam, dikemas apik oleh Hyprland, dan dirapikan oleh kesenjangan. Modular, otomatis, cepat, dan estetis — bukti nyata bahwa waktu luang pun bisa bertransformasi menjadi karya yang berarti, dengan harapan tulus untuk menjadi yang paling bermanfaat bagi sesama~
 
 ### 📋 Daftar Isi
