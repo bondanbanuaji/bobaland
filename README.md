@@ -101,7 +101,7 @@ An Arch Linux setup themed after Hatsune Miku. Born from the productive "procras
 > [!NOTE]
 > Screenshots and videos will be added soon!
 
-*(Placeholder for screenshots)*
+*(Placeholder for screenshotss)*
 *(Placeholder for video demo)*
 
 ### ✨ Features (English)
