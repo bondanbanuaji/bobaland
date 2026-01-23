@@ -1,7 +1,11 @@
 #!/bin/bash
 
-# Bobaland Dotfiles Installer
-# https://github.com/bondanbanuaji/bobaland
+# ============================================================================
+#  BOBALAND - Arch Linux Hyprland Auto Installer
+#  Author: bondanbanuaji
+#  Repo: https://github.com/bondanbanuaji/bobaland
+#  Dotfiles: https://github.com/bondanbanuaji/Dotfiles
+# ============================================================================
 
 set -e
 
@@ -10,202 +14,308 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
+PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+WHITE='\033[1;37m'
+NC='\033[0m'
+BOLD='\033[1m'
 
-# Directories
-DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CONFIG_DIR="$DOTFILES_DIR/.config"
-SCRIPTS_DIR="$DOTFILES_DIR/scripts"
-ASSETS_DIR="$DOTFILES_DIR/assets"
-BACKUP_DIR="$HOME/.config-backup-$(date +%Y%m%d-%H%M%S)"
+# Logging
+LOG_DIR="$HOME/.cache/bobaland"
+LOG_FILE="$LOG_DIR/install_$(date +%Y%m%d_%H%M%S).log"
+mkdir -p "$LOG_DIR"
 
-# Flags
-DRY_RUN=false
-NO_BACKUP=false
+log() { echo -e "[$(date +'%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG_FILE"; }
+log_error() { echo -e "${RED}[ERROR]${NC} $*" | tee -a "$LOG_FILE"; }
+log_success() { echo -e "${GREEN}[SUCCESS]${NC} $*" | tee -a "$LOG_FILE"; }
+log_info() { echo -e "${CYAN}[INFO]${NC} $*" | tee -a "$LOG_FILE"; }
+log_warn() { echo -e "${YELLOW}[WARN]${NC} $*" | tee -a "$LOG_FILE"; }
 
-# Helper Functions
-print_success() { echo -e "${GREEN}[✓]${NC} $1"; }
-print_error() { echo -e "${RED}[✗]${NC} $1"; }
-print_info() { echo -e "${BLUE}[i]${NC} $1"; }
-print_warning() { echo -e "${YELLOW}[!]${NC} $1"; }
-print_header() { echo -e "\n${CYAN}=== $1 ===${NC}\n"; }
-
-usage() {
-    echo "Usage: $0 [options]"
-    echo "Options:"
-    echo "  --dry-run    Preview changes without applying"
-    echo "  --no-backup  Skip backing up existing configs"
-    exit 0
-}
-
-# Parse Args
-for arg in "$@"; do
-    case $arg in
-        --dry-run) DRY_RUN=true ;;
-        --no-backup) NO_BACKUP=true ;;
-        --help) usage ;;
-    esac
-done
-
-# Main Logic
-banner() {
-    echo -e "${CYAN}"
+# Banner
+show_banner() {
+    clear
+    echo -e "${PURPLE}"
     cat << "EOF"
-╔═══════════════════════════════════════╗
-║       Bobaland Dotfiles Setup         ║
-║          Arch Linux Edition           ║
-╚═══════════════════════════════════════╝
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠟⠛⠛⠛⠿⠿⢿⣿⣿⣿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⡻⡿⣿⢿⠟⠋⠁⠀⣀⣠⣤⣤⣤⣀⣀⣀⣂⣀⣀⣀⣀⣀⡉⠙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⢀⢊⠐⠁⠀⠀⣠⣶⡿⠛⣉⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣀⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠀⡔⠑⡀⠀⢀⣤⣾⣟⣫⡴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣿⣷⣄⠈⠙⣟⠼⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠁⡠⠊⢀⡄⢀⣴⣿⣿⠟⡋⢁⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣿⣿⣷⡄⠈⠰⡔⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠀⠀⡇⠀⠟⣴⣿⢟⠕⡡⢊⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⠀⠘⢄⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢠⢦⡁⠀⠇⢠⣾⣿⡟⣡⣾⣴⣿⣿⢋⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠈⢆⠈⢻⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣾⢸⡇⠀⣴⣿⡿⢉⣼⣿⣿⡟⣼⣣⣾⣿⠿⣿⣿⣿⣿⡿⠙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣗⠀⣰⠀⠸⢿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢰⣿⢻⢃⣾⣿⡿⠁⣾⣿⣿⣿⢣⢇⣿⣿⠏⡄⣿⣿⣿⣿⡇⣶⠙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠹⣿⣿⣿⣿⣿⡀⡇⠀⡄⡎⢻⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⣾⡿⢠⣿⡟⡼⠁⣸⣿⣿⣿⡏⣾⣿⣿⠏⡼⡇⢻⢻⣿⣿⡇⡿⣧⡘⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⢻⡇⣿⣿⣿⡇⠁⣼⣷⣷⢸⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢱⡟⣡⣿⢏⣼⠃⣰⣿⣿⣿⣿⢣⣿⣿⡏⣼⣶⣇⢸⠘⣿⣿⡇⣷⡙⣧⡈⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⡎⢿⣾⣿⣿⡇⢀⣿⣿⣿⢸⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⠊⣼⣿⡏⣾⠃⣰⣿⣿⣿⣿⡿⣸⣿⡟⣠⣭⣭⣋⠈⠀⢿⣿⡇⣽⣿⣎⠻⣄⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⡘⣿⣿⣿⣷⣿⣿⣿⣿⣜⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⠟⢁⡴⣿⡿⣸⠇⣰⣿⣿⣿⣿⣿⢇⣻⡿⣱⣿⣿⣿⣿⣇⠸⡜⣿⡇⢻⣿⣿⣷⢋⣡⠹⣿⣿⣿⣿⣿⣿⣿⣿⣧⢹⣿⣿⣿⣿⣿⣿⣿⡏⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⡿⢁⡠⢸⢧⣼⢣⠃⠐⣿⣿⣿⣿⣿⣿⢸⡿⢡⣿⣿⣿⣿⣿⣿⡄⣷⡘⣇⢸⣿⣿⣿⣿⣿⣦⡹⣿⣿⣿⣿⣿⣿⣿⣿⡆⢿⣿⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣯⣶⣿⢇⣿⣼⡏⠄⠐⣸⣿⣿⣿⣿⣿⡇⡾⠁⠛⠿⣿⣿⣿⣿⣿⣿⣿⣷⡈⢸⣿⣿⣿⣿⣿⣿⣷⣘⢿⣿⡟⣿⣿⣿⣿⣿⡘⣿⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⢸⣿⡿⠈⡜⣱⣿⣿⣿⣿⣿⣿⡆⢡⣿⣶⣤⣀⠉⠓⢭⣻⣿⣿⣿⣷⣴⣿⣿⣿⠿⢿⣿⠿⠿⠃⠙⢿⡸⣿⣿⣿⣿⣇⠘⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⡿⣿⣿⠃⠐⣰⡿⠿⢿⣿⣿⣿⣿⡇⢸⡏⣀⣀⣀⣠⣤⣤⣼⣿⣿⣿⣿⣿⣿⣿⠐⠋⠁⢀⣤⣤⣶⣶⣌⢡⢹⣿⡿⠿⡏⣄⠹⣿⣿⣿⣿⣷⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⡇⣿⣿⠀⣴⣿⢣⣿⢸⣿⣿⣿⣿⡇⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⣤⣀⡈⠉⣿⢃⣿⣆⠿⠅⣷⢰⣸⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⢰⣿⣣⣾⣿⡿⣼⡏⣼⣿⠏⢹⣿⡇⣶⡜⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⡘⠻⠋⣴⡀⢿⡆⣿⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⡟⣸⣿⣿⣿⣿⢡⣿⡇⡿⢡⣾⠇⣿⡇⠻⣿⡜⢿⣿⣿⣿⣿⣿⢛⣛⣛⡻⠿⣿⣿⣿⣿⣿⣿⣿⡿⣡⢠⢱⢘⣗⣿⣿⢸⣷⢸⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⡟⣸⡿⠀⣰⣿⢏⡆⣿⡇⣷⣌⠛⠚⠻⠿⠿⠿⢿⣜⢿⣿⡿⣫⣿⣿⣿⣿⣿⠿⢋⣼⠃⢸⡟⣤⢻⣿⣿⡞⣿⡅⣿⣿⣿⣿⣿⣿⡏⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⢡⣿⣿⣿⣿⢃⣿⡇⣼⣿⡟⣼⣿⢹⡇⣿⣿⣷⣶⡄⠀⠀⠀⠀⢸⣷⣶⣾⣿⣿⣿⠟⣉⣁⣘⣻⣯⠄⡟⣼⣿⣎⢿⣿⣧⢻⣷⠹⣿⣿⣿⣿⣿⡇⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⠏⠜⣛⣱⣶⣂⣾⣿⣧⣿⢍⣰⣿⣿⡎⡇⣿⣿⣿⣿⣿⣧⣿⠈⡻⣮⣙⣛⣭⡽⠖⢑⢡⣿⣿⣿⣿⡟⠘⣼⣿⣿⣿⡜⣟⣿⣼⣿⣧⣲⣦⡙⣛⠪⣁⢻⣿⣿⣿⣿
+⣿⣿⣿⣿⡏⡆⢿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣿⠻⢿⣷⡀⣿⣿⣿⠏⡡⣸⣿⣧⣿⣦⠝⠟⣩⣶⣷⣿⣿⣷⡝⠿⣿⣏⣼⣿⣿⡿⢋⢡⣶⣿⣿⣿⣿⣿⣿⣷⣿⡇⣱⢸⣿⣿⣿⣿
+⣿⣿⣿⡿⠁⠻⡘⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠢⣝⢳⣿⣿⡇⠀⢹⣿⣿⣿⣿⡿⢗⣉⡿⢿⣿⠟⡙⢿⠇⠀⣿⣿⣿⠟⡡⠖⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⣡⢃⡎⣿⣿⣿⣿
+⣿⣿⣿⠃⠀⠁⠈⠲⣍⡻⢿⣿⣿⣿⣿⣿⡿⠁⠀⢈⠳⡝⢿⠁⣤⠀⢿⣿⣿⠟⢰⣿⣿⣿⡎⠧⡘⠟⡀⢰⡄⢘⡟⣠⢊⡀⠀⠘⣿⣿⣿⣿⣿⣿⠿⢛⡡⠞⠁⠁⠳⠹⣿⣿⣿
+⣿⣿⡏⠀⠀⠀⠀⠀⠀⠉⠓⢮⣍⡛⠿⠟⠁⠀⠀⣼⣷⡝⡄⢸⣿⣦⣈⣡⣴⣶⡈⣿⣿⡟⢴⣤⣄⣄⣠⣾⣷⠄⡸⣡⣾⠆⠀⠀⠈⠻⠿⣛⣩⠴⠚⠉⠀⠀⠀⠀⠀⠃⢻⣿⣿
+⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠓⠳⠶⣦⣤⣬⣭⣥⠟⣰⣿⣿⣿⣿⣿⣿⡇⣿⣿⡇⢿⣿⣿⣿⣿⣿⣿⡀⢧⣭⣭⣥⣤⣴⠶⠗⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿
+⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠒⠂⣀⠆⣾⣿⣿⣿⣿⣿⣿⣿⡇⣿⣿⣇⢸⣿⣿⣿⣿⣿⣿⣿⣇⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡘⣿
+⡁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⢋⢰⣿⣿⣿⣿⣿⣿⣿⣿⢠⣿⣿⣿⢸⣿⣿⣿⣿⣿⣿⣿⣷⠀⢻⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⡸
+⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⡟⡏⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⢸⣿⡟⠿⠿⠿⠿⠙⣿⡆⠘⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠑
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣧⠀⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⢸⣿⣿⣶⣶⣶⣶⣾⣿⣿⡀⠉⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣿⣿⣿⡏⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⣿⣿⣿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+
+╔════════════════════════════════════════════════════════════════════╗
+║                                                                    ║
+║                                                                    ║
+║ ██████╗  ██████╗ ██████╗  █████╗ ██╗      █████╗ ███╗   ██╗██████╗ ║
+║ ██╔══██╗██╔═══██╗██╔══██╗██╔══██╗██║     ██╔══██╗████╗  ██║██╔══██╗║
+║ ██████╔╝██║   ██║██████╔╝███████║██║     ███████║██╔██╗ ██║██║  ██║║
+║ ██╔══██╗██║   ██║██╔══██╗██╔══██║██║     ██╔══██║██║╚██╗██║██║  ██║║
+║ ██████╔╝╚██████╔╝██████╔╝██║  ██║███████╗██║  ██║██║ ╚████║██████╔╝║
+║ ╚═════╝  ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═════╝ ║
+║                                                                    ║
+║                  Bobaland - My Arch-Hyprland                       ║
+║                     By: Bondan Banuaji                             ║
+║                                                                    ║
+╚════════════════════════════════════════════════════════════════════╝
 EOF
     echo -e "${NC}"
+    echo -e "${CYAN}${BOLD}    Arch Linux Hyprland Auto Installer${NC}"
+    echo -e "${WHITE}    Author: bondanbanuaji${NC}"
+    echo -e "${WHITE}    Repo: https://github.com/bondanbanuaji/bobaland${NC}"
+    echo -e "${WHITE}    Dotfiles: https://github.com/bondanbanuaji/Dotfiles${NC}"
+    echo ""
 }
 
+# Progress bar
+progress_bar() {
+    local duration=$1
+    local message=$2
+    local width=50
+    echo -ne "${CYAN}${message}${NC} ["
+    for ((i=0; i<=width; i++)); do
+        echo -ne "${GREEN}▓${NC}"
+        sleep $(awk "BEGIN {print $duration/$width}")
+    done
+    echo -e "] ${GREEN}✓${NC}"
+}
+
+# Dependency check
+check_dependencies() {
+    log_info "Checking dependencies..."
+    local deps=("git" "stow" "wget" "curl")
+    local missing_deps=()
+    
+    for dep in "${deps[@]}"; do
+        if ! command -v "$dep" &> /dev/null; then
+            missing_deps+=("$dep")
+        fi
+    done
+    
+    if [ ${#missing_deps[@]} -gt 0 ]; then
+        log_warn "Missing dependencies: ${missing_deps[*]}"
+        echo -e "${YELLOW}Installing missing dependencies...${NC}"
+        sudo pacman -S --needed --noconfirm "${missing_deps[@]}"
+    fi
+    
+    log_success "All dependencies satisfied"
+}
+
+# Backup configs
 backup_configs() {
-    if [ "$NO_BACKUP" = true ]; then return; fi
-    print_header "Backing up configurations"
+    local backup_dir="$HOME/.config-backup-$(date +%Y%m%d_%H%M%S)"
+    log_info "Creating backup at: $backup_dir"
+    mkdir -p "$backup_dir"
     
-    if [ "$DRY_RUN" = true ]; then
-        print_info "[DRY RUN] Would backup .config to $BACKUP_DIR"
-        return
-    fi
-
-    mkdir -p "$BACKUP_DIR"
-    print_info "Creating backup at $BACKUP_DIR..."
+    [ -d "$HOME/.config" ] && cp -r "$HOME/.config" "$backup_dir/"
+    [ -f "$HOME/.zshrc" ] && cp "$HOME/.zshrc" "$backup_dir/"
+    [ -f "$HOME/.tmux.conf" ] && cp "$HOME/.tmux.conf" "$backup_dir/"
     
-    # Backup relevant configs only to save space/time, or just backup whole .config?
-    # Backing up individual conflicts is safer.
-    for config in "$CONFIG_DIR"/*; do
-        target="$HOME/.config/$(basename "$config")"
-        if [ -e "$target" ]; then
-            cp -r "$target" "$BACKUP_DIR/"
-            print_success "Backed up $(basename "$config")"
-        fi
-    done
+    log_success "Backup created: $backup_dir"
 }
 
-install_packages() {
-    print_header "Installing Packages"
+# Clone dotfiles
+clone_dotfiles() {
+    local dotfiles_dir="$HOME/dotfiles"
+    local dotfiles_repo="https://github.com/bondanbanuaji/Dotfiles.git"
     
-    # Check for packages.txt
-    PACKAGES_FILE="$SCRIPTS_DIR/packages.txt"
-    if [ ! -f "$PACKAGES_FILE" ]; then
-        print_warning "packages.txt not found in $SCRIPTS_DIR. Skipping package installation."
-        return
-    fi
-
-    if [ "$DRY_RUN" = true ]; then
-        print_info "[DRY RUN] Would install packages from $PACKAGES_FILE"
-        return
-    fi
-
-    # Read and install
-    sudo pacman -Syu --noconfirm
+    log_info "Cloning dotfiles repository..."
     
-    # Check for yay
-    if ! command -v yay &> /dev/null; then
-        print_info "Installing yay..."
-        git clone https://aur.archlinux.org/yay.git /tmp/yay
-        cd /tmp/yay
-        makepkg -si --noconfirm
-        cd "$DOTFILES_DIR"
-    fi
-
-    print_info "Installing official and AUR packages..."
-    yay -S --needed --noconfirm - < "$PACKAGES_FILE"
-    print_success "Packages installed."
-}
-
-link_configs() {
-    print_header "Linking Configuration Files"
-    
-    mkdir -p "$HOME/.config"
-
-    for config in "$CONFIG_DIR"/*; do
-        name=$(basename "$config")
-        target="$HOME/.config/$name"
-        
-        if [ "$DRY_RUN" = true ]; then
-            print_info "[DRY RUN] Would link $name -> $target"
-            continue
-        fi
-
-        # Remove existing config if it exists (backup handled previously)
-        if [ -e "$target" ] || [ -L "$target" ]; then
-            rm -rf "$target"
-        fi
-
-        ln -sf "$config" "$target"
-        print_success "Linked $name"
-    done
-}
-
-setup_assets() {
-    print_header "Setting up Assets"
-    
-    # Wallpapers
-    if [ "$DRY_RUN" = true ]; then
-        print_info "[DRY RUN] Would run setup-wallpapers.sh"
+    if [ -d "$dotfiles_dir" ]; then
+        log_warn "Dotfiles directory exists. Updating..."
+        cd "$dotfiles_dir"
+        git pull
     else
-        bash "$SCRIPTS_DIR/setup-wallpapers.sh"
+        git clone --depth=1 "$dotfiles_repo" "$dotfiles_dir"
+    fi
+    
+    log_success "Dotfiles ready"
+}
+
+# Install packages
+install_packages() {
+    log_info "Installing packages..."
+    
+    local packages=(
+        "hyprland" "xdg-desktop-portal-hyprland"
+        "ghostty" "zsh" "tmux"
+        "waybar" "swaync" "rofi-wayland" "wlogout"
+        "pipewire" "wireplumber" "cava"
+        "ttf-jetbrains-mono-nerd" "ttf-font-awesome" "noto-fonts-emoji"
+        "neovim" "stow"
+    )
+    
+    echo -e "${CYAN}Packages to install:${NC}"
+    printf '%s\n' "${packages[@]}" | column
+    echo ""
+    
+    read -p "Continue? [Y/n] " -n 1 -r
+    echo
+    
+    if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
+        sudo pacman -S --needed --noconfirm "${packages[@]}"
+        log_success "Packages installed"
+    else
+        log_warn "Skipped package installation"
     fi
 }
 
-run_scripts() {
-    print_header "Running System Setup Scripts"
-    
-    scripts=("setup-grub.sh" "setup-plymouth.sh" "setup-sddm.sh")
-    
-    for script in "${scripts[@]}"; do
-        script_path="$SCRIPTS_DIR/$script"
-        
-        if [ ! -f "$script_path" ]; then continue; fi
-
-        echo -n "Run $script? (y/n) "
-        read -r response
-        if [[ "$response" =~ ^[Yy]$ ]]; then
-            if [ "$DRY_RUN" = true ]; then
-                print_info "[DRY RUN] Would execute $script_path"
-            else
-                print_info "Executing $script..."
-                # These scripts usually require root, so we invoke with sudo if needed inside user prompt or here?
-                # Best to run with sudo here if script handles it, but my scripts check if root.
-                # So we should run them with sudo.
-                sudo bash "$script_path"
-            fi
-        fi
-    done
+# Deploy dotfiles
+deploy_dotfiles() {
+    local dotfiles_dir="$HOME/dotfiles"
+    log_info "Deploying dotfiles with GNU Stow..."
+    cd "$dotfiles_dir"
+    stow -v .
+    log_success "Dotfiles deployed"
 }
 
-main() {
-    banner
-    if [ "$DRY_RUN" = true ]; then print_warning "DRY RUN MODE ACTIVE"; fi
+# Setup Zsh
+setup_zsh() {
+    log_info "Setting up Zsh..."
     
-    # Check requirements
-    if [ ! -d "$CONFIG_DIR" ]; then print_error "Configuration directory not found!"; exit 1; fi
+    if [ "$SHELL" != "$(which zsh)" ]; then
+        chsh -s "$(which zsh)"
+        log_success "Default shell changed to Zsh"
+    fi
+    
+    if [ ! -d "$HOME/.oh-my-zsh" ]; then
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    fi
+}
 
-    # Confirm
-    echo "This script will overwrite your existing configurations."
-    echo -n "Continue? (y/n) "
-    read -r response
-    if [[ ! "$response" =~ ^[Yy]$ ]]; then exit 0; fi
+# Post-install
+post_install() {
+    log_info "Running post-install tasks..."
+    
+    [ -d "$HOME/.config/viegphunt" ] && chmod +x "$HOME/.config/viegphunt"/*
+    mkdir -p "$HOME/Pictures/Screenshots" "$HOME/.cache/cava"
+    
+    log_success "Post-install complete"
+}
 
+# Menu
+show_menu() {
+    echo -e "${BOLD}${CYAN}╔════════════════════════════════════════╗${NC}"
+    echo -e "${BOLD}${CYAN}║     Installation Menu                 ║${NC}"
+    echo -e "${BOLD}${CYAN}╚════════════════════════════════════════╝${NC}"
+    echo ""
+    echo -e "${WHITE}1)${NC} Full Installation (Recommended)"
+    echo -e "${WHITE}2)${NC} Install Packages Only"
+    echo -e "${WHITE}3)${NC} Deploy Dotfiles Only"
+    echo -e "${WHITE}4)${NC} Custom Installation"
+    echo -e "${WHITE}5)${NC} Exit"
+    echo ""
+    read -p "$(echo -e ${CYAN}Select [1-5]: ${NC})" choice
+    
+    case $choice in
+        1) full_installation ;;
+        2) install_packages ;;
+        3) clone_dotfiles && deploy_dotfiles ;;
+        4) custom_installation ;;
+        5) exit 0 ;;
+        *) log_error "Invalid option"; show_menu ;;
+    esac
+}
+
+# Full installation
+full_installation() {
+    log_info "Starting full installation..."
+    check_dependencies
     backup_configs
-    
-    echo -n "Install packages? (y/n) "
-    read -r response
-    if [[ "$response" =~ ^[Yy]$ ]]; then install_packages; fi
-    
-    link_configs
-    
-    # Wallpapers are safe to always install if folder exists? asking is better.
-    echo -n "Install wallpapers? (y/n) "
-    read -r response
-    if [[ "$response" =~ ^[Yy]$ ]]; then setup_assets; fi
-
-    run_scripts
-
-    print_header "Installation Complete!"
-    print_info "Please reboot your system."
+    install_packages
+    clone_dotfiles
+    deploy_dotfiles
+    setup_zsh
+    post_install
+    show_completion
 }
 
-main
+# Custom installation
+custom_installation() {
+    echo -e "${CYAN}Select components:${NC}"
+    echo ""
+    
+    read -p "Backup configs? [Y/n] " backup
+    read -p "Install packages? [Y/n] " packages
+    read -p "Deploy dotfiles? [Y/n] " dotfiles
+    read -p "Setup Zsh? [Y/n] " zsh
+    
+    [[ $backup =~ ^[Yy]$ ]] && backup_configs
+    [[ $packages =~ ^[Yy]$ ]] && install_packages
+    [[ $dotfiles =~ ^[Yy]$ ]] && clone_dotfiles && deploy_dotfiles
+    [[ $zsh =~ ^[Yy]$ ]] && setup_zsh
+    
+    post_install
+    show_completion
+}
+
+# Completion
+show_completion() {
+    clear
+    echo -e "${GREEN}"
+    cat << "EOF"
+    ╔═══════════════════════════════════════════════════════════╗
+    ║                                                           ║
+    ║   ✓  Installation Complete!                              ║
+    ║                                                           ║
+    ║   Your Bobaland Hyprland setup is ready!                ║
+    ║                                                           ║
+    ╚═══════════════════════════════════════════════════════════╝
+EOF
+    echo -e "${NC}"
+    echo -e "${CYAN}Next steps:${NC}"
+    echo -e "  ${WHITE}1.${NC} Logout and login again"
+    echo -e "  ${WHITE}2.${NC} Select Hyprland from display manager"
+    echo -e "  ${WHITE}3.${NC} Press ${YELLOW}SUPER + H${NC} for keybindings"
+    echo ""
+    echo -e "${CYAN}Useful commands:${NC}"
+    echo -e "  ${WHITE}•${NC} Logs: ${YELLOW}cat $LOG_FILE${NC}"
+    echo -e "  ${WHITE}•${NC} Restore: ${YELLOW}cp -r ~/.config-backup-*/.config ~/${NC}"
+    echo ""
+    echo -e "${GREEN}Enjoy! 🚀${NC}"
+}
+
+# Main
+main() {
+    show_banner
+    
+    if [ "$EUID" -eq 0 ]; then
+        log_error "Don't run as root"
+        exit 1
+    fi
+    
+    if [ ! -f /etc/arch-release ]; then
+        log_error "Arch Linux only"
+        exit 1
+    fi
+    
+    show_menu
+}
+
+main "$@"

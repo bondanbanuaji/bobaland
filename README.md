@@ -1,68 +1,93 @@
-# 🧋 Bobaland Dotfiles (Powered by Miku)
+# Bobaland - My Arch-Hyprland
 
-```text
-⣿⣿⣿⣿⠁⣆⠹⠿⠊⣉⣠⣴⣶⣶⣶⣶⣶⣶⡄⠸⠟⣀⠱⠍⣙⠻⣿⣿⣿⣿
-⣿⣿⣿⡇⢀⣿⠀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣦⣶⣿⣷⣦⡈⠳⣌⠻⣿⡿
-⣿⣿⡟⢃⣤⡉⣰⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⡙⣿⣿⣿⣿⣦⡈⢣⡠⣼
-⠇⡄⢠⣾⣿⡿⢿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠻⣋⣁⡙⣿⣿⣿⣿⣿⡄⢳⡐
-⠰⠁⣼⣿⣿⡇⣿⠟⣛⢿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣿⣿⢳⣄⠛⠈⣿⣿⣿⡄⢹
-⡆⢰⣿⣿⣿⢠⠰⣿⣿⣇⠻⣿⣿⣿⢿⣿⣿⡟⠃⠛⣋⣈⠙⠛⢢⠹⢻⣿⣷⡀
-⠇⣸⣿⠘⣡⣿⠄⠻⠿⠟⠁⠹⣿⣿⡆⢉⠻⠟⣠⠞⠉⢉⣿⣶⡀⠀⢸⣿⡏⢇
-⠀⣿⣿⠀⡿⠁⣠⡦⠂⢀⠲⣶⣾⣿⣿⣿⣷⣿⡇⠀⠀⠸⠿⠻⣇⡄⠸⣿⣿⣸
-⠀⣿⣿⡇⡀⢰⡿⠀⠀⠿⠗⠈⢿⣿⣿⣿⣿⣿⣧⣘⣂⣀⣾⠀⠟⠀⡄⢻⣿⣇
-⠀⣿⣿⡇⠸⢸⣧⠰⣄⣀⣴⣦⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣉⢈⣤⣾⣷⠸⣿⣿
-⠀⣿⣿⣷⠀⣄⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⢿⣿
-⡆⣿⣿⣿⡄⢿⣷⣶⣿⣿⣿⣿⣿⣿⣿⠟⠛⠻⣿⣿⣿⣿⣿⣿⣿⡿⣡⣦⢸⣿
-⡇⣿⣿⣿⣿⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⠈⠄⣸⣿⣿⣿⣿⠿⣫⣾⣿⣿⣸⣏
-⡇⣿⣿⣿⣿⣇⢈⠻⠿⣿⣿⣿⣿⣿⣿⣷⣶⣶⣿⠿⠟⣋⣥⣾⣿⣿⣿⣿⣿⣿
-⡇⣿⣿⣿⣿⣿⡄⢿⣷⣶⣦⣭⣭⣭⣍⠉⠉⠥⠦⠐⣾⣿⣿⣿⣿⣿⣿⣿⣯⣿
+![Arch Linux](https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)
+![Hyprland](https://img.shields.io/badge/Hyprland-00A4A6?style=for-the-badge&logo=hyprland&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
 
-```
+## Table of Contents
+- [Preview](#preview)
+- [Features](#features)
+- [Notes & Important Info](#notes--important-info)
+- [Keybindings](#keybindings)
+- [Installation](#installation)
+- [What Gets Installed](#what-gets-installed)
+- [Dotfiles Repo](#dotfiles-repo)
+- [Troubleshooting](#troubleshooting)
+- [Post-Installation](#post-installation)
+- [Updating](#updating)
+- [Uninstallation](#uninstallation)
+- [Credits](#credits)
 
+## Preview
+> [!NOTE]
+> Screenshots and videos will be added soon!
 
-![Badge](https://img.shields.io/badge/Arch%20Linux-Best%20OS-1793d1?style=for-the-badge&logo=archlinux&logoColor=white)
-![Badge](https://img.shields.io/badge/Hyprland-Window%20Manager-33ccff?style=for-the-badge&logo=hyprland&logoColor=white)
-![Badge](https://img.shields.io/badge/Miku-Theme-39c5bb?style=for-the-badge)
+*(Placeholder for screenshots)*
+*(Placeholder for video demo)*
 
-> **"World is Mine!"** - A Hatsune Miku inspired Arch Linux configuration.
+## Features
+- ✨ **Interactive Installation**: User-friendly menu to guide you through the process.
+- 🔒 **Safe & Reversible**: Automatically backs up your existing configurations before applying changes.
+- 📦 **Complete Setup**: Installs necessary packages including Hyprland, Waybar, Rofi, and more.
+- 🎨 **Beautiful Interface**: Features a custom anime ASCII art banner and colored output.
+- 📊 **Progress Monitoring**: Clear progress bars and logging for transparency.
+- 🚀 **Automated Deployment**: Clones and deploys dotfiles using GNU Stow.
 
-Welcome to **Bobaland**, a highly customized, professional, and aesthetic dotfiles repository for Arch Linux. This setup features a cohesive **Miku-themed (Cyan/Teal)** interface, utilizing Hyprland for a modern tiling window manager experience.
+## Notes & Important Info
+- This script is designed for **Arch Linux**.
+- Ensure you have a working internet connection before running the installer.
+- The installer creates a log file in `~/.cache/bobaland/` for debugging.
 
-## Show Up 
+## Keybindings
+Press <kbd>SUPER</kbd> + <kbd>H</kbd> after installation to view the full list of keybindings.
 
-[![watch on my yy](https://img.shields.io/badge/Watch%20on-YouTube-red?logo=youtube&logoColor=white)](https://youtu.be/c1lUxNYNS5Q)
+## Installation
 
-**↓ watch now below ↓** 
-
-https://github.com/user-attachments/assets/c8d48ba2-1d7b-43b5-a79d-491cc76276f1
-
-> **Click the link or video above to watch the setup demo**
-
-## ✨ Features
-- **Window Manager**: [Hyprland](https://hyprland.org/) with smooth animations.
-- **Bar**: [Waybar](https://github.com/Alexays/Waybar) custom styled.
-- **Launcher**: [Wofi](https://hg.sr.ht/~scoopta/wofi) / Rofi.
-- **Terminal**: [Kitty](https://sw.kovidgoyal.net/kitty/) with transparency and blur.
-- **Shell**: Zsh as the default shell.
-- **Boot**: Custom GRUB and Plymouth themes.
-- **Lockscreen**: Swaylock with Miku aesthetics.
-
-## 🚀 Quick Start
- Clone the repository and run the installer:
 ```bash
-git clone https://github.com/bondanbanuaji/bobaland.git
+git clone --depth=1 https://github.com/bondanbanuaji/bobaland.git
 cd bobaland
+chmod +x install.sh
 ./install.sh
 ```
 
-## 📂 Structure
-- `~/.config/` - Main configuration files.
-- `assets/` - Wallpapers, screenshots, and themes.
-- `scripts/` - Helper utilities.
-- `docs/` - Detailed documentation.
+## What Gets Installed
+- **Window Manager**: Hyprland
+- **Bar**: Waybar
+- **Notification**: SwayNC
+- **Launcher**: Rofi (Wayland)
+- **Terminal**: Ghostty (or fallback), Zsh, Tmux
+- **Audio**: Pipewire, Wireplumber, Cava
+- **Fonts**: JetBrains Mono Nerd Font, Font Awesome, Noto Emoji
+- **Tools**: Neovim, Stow, Git, Curl, Wget
 
-## Check Documentation
-[Documentation](https://github.com/bondanbanuaji/bobaland/blob/main/docs/DOCUMENTATION.md)
+## Dotfiles Repo
+👉 **[bondanbanuaji/Dotfiles](https://github.com/bondanbanuaji/Dotfiles)**
 
-## 📜 License
-MIT © [boba](https://github.com/bondanbanuaji)
+The installer automatically clones and deploys these dotfiles using GNU Stow.
+
+## Troubleshooting
+If you encounter issues:
+1.  Check the log file: `~/.cache/bobaland/install_TIMESTAMP.log`
+2.  Ensure your system is up to date: `sudo pacman -Syu`
+3.  If dotfiles conflict, the backup is located in `~/.config-backup-TIMESTAMP/`
+
+## Post-Installation
+1.  Logout and login again.
+2.  Select **Hyprland** from your display manager (SDDM/GDM/etc).
+3.  Enjoy your new setup!
+
+## Updating
+To update your dotfiles:
+1.  Navigate to `~/dotfiles`
+2.  Run `git pull`
+3.  Run `stow -v .`
+
+## Uninstallation
+To revert changes, simply restore your backed-up configs from `~/.config-backup-*/`.
+
+## Credits
+- r/unixporn
+- JaKooLit/Hyprland-Dots
+- Hyde-project/hyde
+- mylinuxforwork/dotfiles
+- ViegPhunt/Arch-Hyprland
