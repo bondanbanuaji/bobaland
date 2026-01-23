@@ -49,7 +49,7 @@ Setup Arch Linux bertema Hatsune Miku. Terlahir dari "kegabutan" produktif seora
 <summary>📂 Lihat Screenshot Lainnya</summary>
 
 <p align="center">
-  <img src="assets/screenshots/hyprlock.png" alt="Waylock" width="49%"/>
+  <img src="assets/screenshots/hyprlock.png" alt="Hyprlock" width="49%"/>
   <img src="assets/screenshots/sddm.png" alt="SDDM" width="49%"/>
 </p>
 

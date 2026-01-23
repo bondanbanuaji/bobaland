@@ -775,6 +775,198 @@ PROFILE_EOF
     log_info "After reboot, login to TTY1 and run: ~/.start-hyprland"
 }
 
+setup_sddm_theme() {
+    log_info "Setting up SDDM theme..."
+    
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_info "Would deploy SDDM theme from $DOTFILES_DIR/.config/sddm/theme"
+        return 0
+    fi
+
+    local theme_src="$DOTFILES_DIR/.config/sddm/theme"
+    local sddm_conf="$DOTFILES_DIR/sddm.conf"
+    local sddm_conf_d="$DOTFILES_DIR/.config/sddm"
+    local themes_dir="/usr/share/sddm/themes"
+
+    # Check if dotfiles provides SDDM theme
+    if [[ ! -d "$theme_src" ]]; then
+        log_warn "SDDM theme source not found at: $theme_src"
+        return 0
+    fi
+
+    log_info "Deploying SDDM theme..."
+    
+    # Create themes directory if missing
+    sudo mkdir -p "$themes_dir"
+
+    # Copy theme
+    if sudo cp -r "$theme_src" "$themes_dir/"; then
+        log_success "SDDM theme copied to $themes_dir"
+    else
+        log_error "Failed to copy SDDM theme"
+        # Don't fail the entire install
+    fi
+
+    # Copy sddm.conf
+    if [[ -f "$sddm_conf" ]]; then
+        log_info "Installing sddm.conf..."
+        sudo cp "$sddm_conf" /etc/sddm.conf
+        log_success "Updated /etc/sddm.conf"
+    fi
+
+    # Copy additional configs
+    if [[ -d "$sddm_conf_d" ]]; then
+        log_info "Installing additional SDDM configs..."
+        sudo mkdir -p /etc/sddm.conf.d
+        local count=0
+        for conf in "$sddm_conf_d"/*.conf; do
+            if [[ -f "$conf" ]]; then
+                sudo cp "$conf" /etc/sddm.conf.d/
+                ((count++))
+            fi
+        done
+        if [[ $count -gt 0 ]]; then
+            log_success "Installed $count config file(s) to /etc/sddm.conf.d/"
+        fi
+    fi
+}
+
+setup_grub_theme() {
+    log_info "Setting up GRUB theme..."
+    
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_info "Would deploy GRUB theme and update configuration"
+        return 0
+    fi
+
+    local grub_src="$DOTFILES_DIR/.config/grub"
+    
+    if [[ ! -d "$grub_src" ]]; then
+        log_warn "GRUB configuration source not found at: $grub_src"
+        return 0
+    fi
+
+    # Check if we are using GRUB
+    if [[ ! -f /etc/default/grub ]]; then
+        log_warn "/etc/default/grub not found. Skipping GRUB theme setup."
+        return 0
+    fi
+
+    log_info "Deploying GRUB theme..."
+
+    # Backup original config
+    if [[ ! -f /etc/default/grub.bak ]]; then
+        log_info "Backing up /etc/default/grub to /etc/default/grub.bak..."
+        sudo cp /etc/default/grub /etc/default/grub.bak
+    fi
+
+    # Copy grub.default
+    if [[ -f "$grub_src/grub.default" ]]; then
+        log_info "Installing grub.default..."
+        sudo cp "$grub_src/grub.default" /etc/default/grub
+        log_success "Updated /etc/default/grub"
+    fi
+
+    # Copy themes
+    if [[ -d "$grub_src/themes" ]]; then
+        log_info "Installing GRUB themes..."
+        sudo mkdir -p /boot/grub/themes
+        if sudo cp -r "$grub_src/themes/"* /boot/grub/themes/; then
+            log_success "GRUB themes installed"
+        else
+            log_error "Failed to copy GRUB themes"
+        fi
+    else
+        log_warn "No themes directory found in $grub_src"
+    fi
+
+    # Update GRUB
+    log_info "Updating GRUB configuration..."
+    if command -v grub-mkconfig &>/dev/null; then
+        if sudo grub-mkconfig -o /boot/grub/grub.cfg; then
+            log_success "GRUB configuration updated"
+        else
+            log_error "Failed to run grub-mkconfig"
+            log_warn "Please run 'sudo grub-mkconfig -o /boot/grub/grub.cfg' manually"
+        fi
+    else
+        log_warn "grub-mkconfig not found. Skipping GRUB update."
+    fi
+}
+
+setup_plymouth() {
+    log_info "Setting up Plymouth boot animation..."
+    
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_info "Would setup Plymouth theme and update initramfs"
+        return 0
+    fi
+
+    local plymouth_src="$DOTFILES_DIR/.config/plymouth"
+
+    if [[ ! -d "$plymouth_src" ]]; then
+        log_warn "Plymouth configuration source not found at: $plymouth_src"
+        return 0
+    fi
+
+    # Check/Install Plymouth
+    if ! pacman -Qi plymouth &>/dev/null; then
+        log_info "Installing Plymouth..."
+        if sudo pacman -S --needed --noconfirm plymouth; then
+            log_success "Plymouth installed"
+        else
+            log_error "Failed to install Plymouth"
+            # Don't fail completely, just return
+            return 1
+        fi
+    fi
+
+    # Copy config
+    if [[ -f "$plymouth_src/plymouthd.conf" ]]; then
+        log_info "Installing plymouthd.conf..."
+        sudo mkdir -p /etc/plymouth
+        sudo cp "$plymouth_src/plymouthd.conf" /etc/plymouth/
+        log_success "plymouthd.conf installed"
+    fi
+
+    # Copy theme
+    local theme_src_dir="$plymouth_src/theme"
+    if [[ -d "$theme_src_dir" ]]; then
+        log_info "Installing Plymouth theme..."
+        sudo mkdir -p /usr/share/plymouth/themes
+        
+        # Copy the theme folder
+        if sudo cp -r "$theme_src_dir" /usr/share/plymouth/themes/; then
+            log_success "Plymouth theme copied"
+            
+            # Set the theme
+            local theme_name
+            theme_name=$(basename "$theme_src_dir")
+            log_info "Setting default theme to: $theme_name"
+            
+            if sudo plymouth-set-default-theme "$theme_name"; then
+                log_success "Plymouth theme selected"
+            else
+                log_error "Failed to set Plymouth theme"
+                log_warn "Try running 'sudo plymouth-set-default-theme -R $theme_name' manually"
+            fi
+        else
+            log_error "Failed to copy Plymouth theme"
+        fi
+    else
+        log_warn "Plymouth theme directory not found in dotfiles"
+    fi
+
+    # Update initramfs
+    log_info "Updating initramfs..."
+    if sudo mkinitcpio -P; then
+        log_success "Initramfs updated"
+    else
+        log_error "Failed to update initramfs"
+        log_warn "You may need to run 'sudo mkinitcpio -P' manually"
+    fi
+}
+
 # Post-install
 post_install() {
     log_info "Running post-install tasks..."
@@ -923,6 +1115,42 @@ full_installation() {
     else
         log_info "Skipping post-install (already done)"
     fi
+
+    # Step 8: SDDM Theme
+    if ! has_checkpoint "SDDM_THEMED"; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_info "Would deploy SDDM theme"
+        else
+            setup_sddm_theme
+        fi
+        save_checkpoint "SDDM_THEMED"
+    else
+        log_info "Skipping SDDM theme setup (already done)"
+    fi
+
+    # Step 9: GRUB Theme
+    if ! has_checkpoint "GRUB_THEMED"; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_info "Would deploy GRUB theme"
+        else
+            setup_grub_theme
+        fi
+        save_checkpoint "GRUB_THEMED"
+    else
+        log_info "Skipping GRUB theme setup (already done)"
+    fi
+
+    # Step 10: Plymouth
+    if ! has_checkpoint "PLYMOUTH_SETUP"; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_info "Would setup Plymouth"
+        else
+            setup_plymouth
+        fi
+        save_checkpoint "PLYMOUTH_SETUP"
+    else
+        log_info "Skipping Plymouth setup (already done)"
+    fi
     
     if [[ "$DRY_RUN" == "true" ]]; then
         echo ""
@@ -948,6 +1176,7 @@ custom_installation() {
     read -p "Install packages? [Y/n] " -r packages_choice
     read -p "Deploy dotfiles? [Y/n] " -r dotfiles_choice
     read -p "Setup Zsh? [Y/n] " -r zsh_choice
+    read -p "Deploy themes (SDDM, GRUB, Plymouth)? [Y/n] " -r themes_choice
     
     [[ ! $backup_choice =~ ^[Nn]$ ]] && backup_configs
     [[ ! $packages_choice =~ ^[Nn]$ ]] && install_packages
@@ -955,6 +1184,13 @@ custom_installation() {
     [[ ! $zsh_choice =~ ^[Nn]$ ]] && setup_zsh
     
     post_install
+    
+    if [[ ! $themes_choice =~ ^[Nn]$ ]]; then
+        setup_sddm_theme
+        setup_grub_theme
+        setup_plymouth
+    fi
+    
     show_completion
 }
 
